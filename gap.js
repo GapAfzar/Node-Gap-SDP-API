@@ -23,7 +23,7 @@ module.exports = class GapApi {
 		app.use(bodyParser.urlencoded({
 			extended: true
 		}));
-		app.post('/', function (req, res) {
+		app.post('*', function (req, res) {
 			self._onText(req, res);
 		});
 		app.listen(this.port);
@@ -89,7 +89,7 @@ module.exports = class GapApi {
 		};
 
 		var self = this;
-		this._uploadFile(img, (data) => {
+		this._uploadFile('image', img, (data) => {
 		    data['desc'] = desc;
 		    let params = {chat_id: chatId, data: JSON.stringify(data)};
 		    if (replyKeywords) {
@@ -105,7 +105,7 @@ module.exports = class GapApi {
 		};
 
 		var self = this;
-		this._uploadFile(video, (data) => {
+		this._uploadFile('video', video, (data) => {
 		    data['desc'] = desc;
 		    let params = {chat_id: chatId, data: JSON.stringify(data)};
 		    if (replyKeywords) {
@@ -115,10 +115,9 @@ module.exports = class GapApi {
 		});
 	}
 
-	_uploadFile(address, callback = () => {}) {
-		var formData = {
-		    file: fs.createReadStream(address),
-		};
+	_uploadFile(type, address, callback = () => {}) {
+		var formData = {};
+		formData[type] = fs.createReadStream(address);
 
 		request.post({url:this.apiUrl + 'upload', formData: formData}, (err, httpResponse, body) => {
 		    if (err) {
