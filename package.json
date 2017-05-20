@@ -1,17 +1,21 @@
 {
-  "name": "gap_api",
-  "version": "1.1.1",
-  "description": "A Nodejs wrapper for the Gap Messenger SDP API.",
-  "main": "gap.js",
-  "dependencies": {
-    "body-parser": "^1.17.1",
-    "express": "^4.15.2",
-    "request": "^2.81.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Mehdi jamal",
-  "license": "ISC"
+	"name": "gap_api",
+	"version": "1.2.0",
+	"description": "A Nodejs wrapper for the Gap Messenger SDP API.",
+	"main": "gap.js",
+	"dependencies": {
+		"body-parser": "^1.17.1",
+		"express": "^4.15.2",
+		"request": "^2.81.0"
+	},
+	"devDependencies": {},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/GapAfzar/Node-Gap-SDP-API"
+	},
+	"author": "Mehdi jamal",
+	"license": "MIT"
 }

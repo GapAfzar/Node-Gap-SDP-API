@@ -12,6 +12,7 @@ module.exports = class GapApi {
 		this.port = options.port || 3000;
 		this.joinHandler = () => {};
 		this.mainHandler = () => {};
+		this.triggerButtonHandler = () => {};
 		this.textHandlers = [];
 		this.startHttpServer();
 	}
@@ -33,6 +34,10 @@ module.exports = class GapApi {
 		this.joinHandler = callback;
 	}
 
+	onTriggerButton(callback) {
+		this.triggerButtonHandler = callback || () => {};
+	}
+
 	onText() {
 		switch (arguments.length) {
 			case 1 :
@@ -51,7 +56,9 @@ module.exports = class GapApi {
 	_onText(req, res) {
 		if (req.body.type == 'join') {
 			this.joinHandler(req.body);
-		} else {
+		} else if (req.body.type == 'triggerButton') {
+			this.triggerButtonHandler(req.body);
+    	} else {
 			this.mainHandler(req.body);
 			if (this.textHandlers.length) {
 				this.findTextHandler(req.body);
@@ -75,10 +82,13 @@ module.exports = class GapApi {
 		});
 	}
 
-	sendText(chatId, data, replyKeywords = null) {
+	sendText(chatId, data, replyKeywords, inlineKeywords) {
 		var params = {chat_id: chatId, data: data};
 		if (replyKeywords) {
 			params['reply_keyboard'] = this._replyKeyboard(replyKeywords);
+		}
+		if (inlineKeywords) {
+			params['inline_keyboard'] = JSON.stringify(inlineKeywords)
 		}
 		return this._sendRequest('text', params);
 	}
@@ -115,6 +125,30 @@ module.exports = class GapApi {
 		});
 	}
 
+	editText(chatId, messageId, data, inlineKeywords) {
+		var params = {
+			chat_id: chatId,
+			message_id: messageId
+		};
+		if (data) {
+			params['data'] = data
+		}
+		if (inlineKeywords) {
+			params['inline_keyboard'] = JSON.stringify(inlineKeywords)
+		}
+		return this._sendRequest(false, params, 'editMessage');
+	}
+
+	answerCallback(chatId, callback_id, text, show_alert) {
+		var params = {
+			chat_id: chatId,
+			callback_id,
+			text,
+			show_alert
+		};
+		return this._sendRequest(false, params, 'answerCallback');
+	}
+
 	_uploadFile(type, address, callback = () => {}) {
 		var formData = {};
 		formData[type] = fs.createReadStream(address);
@@ -142,7 +176,9 @@ module.exports = class GapApi {
 	}
 
 	_sendRequest(msgType, params, method = 'sendMessage') {
-		params['type'] = msgType;
+		if (msgType) {
+			params['type'] = msgType;
+		}
 		var options = {
 			url: this.apiUrl + method,
 			method: 'post',
