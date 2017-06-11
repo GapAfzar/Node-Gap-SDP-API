@@ -35,7 +35,7 @@ module.exports = class GapApi {
 	}
 
 	onTriggerButton(callback) {
-		this.triggerButtonHandler = callback || () => {};
+		this.triggerButtonHandler = callback || function() {};
 	}
 
 	onText() {
