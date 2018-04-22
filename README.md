@@ -1,5 +1,6 @@
 # Sample
 
+```js
 const GapApi = require('gap_api');
 const gap = new GapApi(
     '__TOKEN__',
@@ -13,3 +14,4 @@ gap.onText(data => {
     var chatId = data.chat_id;
     return gap.sendText(chatId, `Message received!`);
 });
+```
