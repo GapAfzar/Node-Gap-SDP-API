@@ -1,6 +1,6 @@
 {
 	"name": "gap_api",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"description": "A Nodejs wrapper for the Gap Messenger SDP API.",
 	"main": "gap.js",
 	"dependencies": {
