@@ -10,6 +10,7 @@ module.exports = class GapApi {
     this.apiUrl = "https://api.gap.im/";
     this.token = token;
     this.port = options.port || 3000;
+    this.onUnhandledText = options.onUnhandledText || (() => {});
     this.joinHandler = () => {};
     this.mainHandler = () => {};
     this.triggerButtonHandler = () => {};
@@ -136,13 +137,17 @@ module.exports = class GapApi {
       return true;
     }
 
-    this.textHandlers.every(function(handler) {
+    var hasCalledAny = !this.textHandlers.every(function(handler) {
       if (handler.regexp.test(text)) {
         handler.callback(data);
         return false;
       }
       return true;
     });
+
+    if (!hasCalledAny) {
+      this.onUnhandledText(data);
+    }
   }
 
   onJoin(callback = () => {}) {
