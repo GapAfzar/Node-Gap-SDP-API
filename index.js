@@ -117,8 +117,14 @@ module.exports = class GapApi {
           if (body) {
             return reject(body);
           }
+
+          if (response.statusCode == 403) {
+            return reject("Invalid token");
+          }
+
           return reject("an error was encountered");
         }
+
         resolve(true);
       });
     });
