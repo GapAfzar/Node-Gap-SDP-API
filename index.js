@@ -6,7 +6,7 @@ var express = require("express"),
   fs = require("fs");
 
 module.exports = class GapApi {
-  constructor(token, options = {}) {
+  constructor(token, options = {httpServer:true}) {
     this.apiUrl = "https://api.gap.im/";
     this.token = token;
     this.port = options.port || 3000;
@@ -15,7 +15,9 @@ module.exports = class GapApi {
     this.mainHandler = () => {};
     this.triggerButtonHandler = () => {};
     this.textHandlers = [];
-    this._startHttpServer();
+    if (options.httpServer === true) {
+      this._startHttpServer();
+    }
   }
 
   _startHttpServer() {
