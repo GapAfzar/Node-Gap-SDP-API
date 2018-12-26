@@ -194,13 +194,13 @@ module.exports = class GapApi {
   }
 
   async sendImage(chatId, img, desc = "", replyKeywords = null) {
-    if (!fs.existsSync(img)) {
+    if (typeof img === "string" && !fs.existsSync(img)) {
       throw "Image path is invalid";
     }
 
     let params = {
       chat_id: chatId,
-      data: JSON.stringify({
+      data: typeof img === "object" ? JSON.stringify(img) : JSON.stringify({
         ...(await this._uploadFile("image", img)),
         desc
       })
@@ -214,13 +214,13 @@ module.exports = class GapApi {
   }
 
   async sendFile(chatId, file, desc = "", replyKeywords = null) {
-    if (!fs.existsSync(file)) {
+    if (typeof file === "string" && !fs.existsSync(file)) {
       throw "File path is invalid";
     }
 
     let params = {
       chat_id: chatId,
-      data: JSON.stringify({
+      data: typeof file === "object" ? JSON.stringify(file) : JSON.stringify({
         ...(await this._uploadFile("file", file)),
         desc
       })
@@ -234,13 +234,13 @@ module.exports = class GapApi {
   }
 
   async sendVideo(chatId, video, desc = "", replyKeywords = null) {
-    if (!fs.existsSync(video)) {
+    if (typeof video === "string" && !fs.existsSync(video)) {
       throw "Video path is invalid";
     }
 
     let params = {
       chat_id: chatId,
-      data: JSON.stringify({
+      data: typeof video === "object" ? JSON.stringify(video) : JSON.stringify({
         ...(await this._uploadFile("video", video)),
         desc
       })
