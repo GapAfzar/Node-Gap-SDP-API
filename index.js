@@ -253,6 +253,26 @@ module.exports = class GapApi {
     return await this._sendRequest("video", params);
   }
 
+  async sendAudio(chatId, audio, desc = "", replyKeywords = null) {
+    if (typeof audio === "string" && !fs.existsSync(audio)) {
+      throw "Audio path is invalid";
+    }
+
+    let params = {
+      chat_id: chatId,
+      data: typeof audio === "object" ? JSON.stringify(audio) : JSON.stringify({
+        ...(await this._uploadFile("audio", audio)),
+        desc
+      })
+    };
+
+    if (replyKeywords) {
+      params["reply_keyboard"] = self._replyKeyboard(replyKeywords);
+    }
+
+    return await this._sendRequest("audio", params);
+  }
+
   async editText(chatId, messageId, data, inlineKeywords) {
     var params = {
       chat_id: chatId,
