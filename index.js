@@ -200,7 +200,7 @@ module.exports = class GapApi {
 
     let params = {
       chat_id: chatId,
-      data: typeof img === "object" ? JSON.stringify(img) : JSON.stringify({
+      data: typeof img === "object" ? JSON.stringify({...img, desc}) : JSON.stringify({
         ...(await this._uploadFile("image", img)),
         desc
       })
@@ -220,7 +220,7 @@ module.exports = class GapApi {
 
     let params = {
       chat_id: chatId,
-      data: typeof file === "object" ? JSON.stringify(file) : JSON.stringify({
+      data: typeof file === "object" ? JSON.stringify({...file, desc}) : JSON.stringify({
         ...(await this._uploadFile("file", file)),
         desc
       })
@@ -240,7 +240,7 @@ module.exports = class GapApi {
 
     let params = {
       chat_id: chatId,
-      data: typeof video === "object" ? JSON.stringify(video) : JSON.stringify({
+      data: typeof video === "object" ? JSON.stringify({...video, desc}) : JSON.stringify({
         ...(await this._uploadFile("video", video)),
         desc
       })
@@ -260,7 +260,7 @@ module.exports = class GapApi {
 
     let params = {
       chat_id: chatId,
-      data: typeof audio === "object" ? JSON.stringify(audio) : JSON.stringify({
+      data: typeof audio === "object" ? JSON.stringify({...audio, desc}) : JSON.stringify({
         ...(await this._uploadFile("audio", audio)),
         desc
       })
